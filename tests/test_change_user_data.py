@@ -4,6 +4,7 @@ import requests
 from data.user_data import User
 from data.handlers import *
 from conftest import create_user
+from data.error_messages_list import ErrorMessages
 
 @allure.suite('Изменение данных пользовователя')
 class TestChangeUserData:
@@ -36,4 +37,4 @@ class TestChangeUserData:
     @allure.title("Изменение данных пользователя без авторизацией")
     def test_change_user_data_without_auth(self):
         response = requests.patch(f"{Urls.MAIN_URL}{Handlers.CHANGE_USER_DATA}", data=User.create_data_user())
-        assert response.status_code == 401 and response.json()['message'] == 'You should be authorised'
+        assert response.status_code == 401 and response.json()['message'] == ErrorMessages.UNAUTHORIZED_MESSAGE

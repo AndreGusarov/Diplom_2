@@ -3,6 +3,7 @@ import requests
 
 from data.ingredients_data import Ingredient
 from data.handlers import *
+from data.error_messages_list import ErrorMessages
 
 @allure.suite("Создание заказа")
 class TestCreateOrder:
@@ -24,13 +25,13 @@ class TestCreateOrder:
     @allure.title("Создание заказа")
     def test_create_order_without_ingredients(self):
         resonse = requests.post(f'{Urls.MAIN_URL}{Handlers.CREATE_ORDER}')
-        assert resonse.status_code == 400 and resonse.json()['message'] == "Ingredient ids must be provided"
+        assert resonse.status_code == 400 and resonse.json()['message'] == ErrorMessages.NO_INGREDIENTS_MESSAGE
 
     @allure.description("Создание заказа c невалидным хешем ингредиентов")
     @allure.title("Создание заказа")
     def test_create_order_with_invalid_hash(self):
         response = requests.post(f'{Urls.MAIN_URL}{Handlers.CREATE_ORDER}', data=Ingredient.incorrect_ingredients_data)
-        assert response.status_code == 500 and 'Internal Server Error' in response.text #Проверять, что сервер пятисотит, совсем не ок, но в спеке api-documentation.pdf это ожидаемое поведение :)
+        assert response.status_code == 500 and ErrorMessages.INTERNAL_SERVER_ERROR_MESSAGE in response.text #Проверять, что сервер пятисотит, совсем не ок, но в спеке api-documentation.pdf это ожидаемое поведение :)
 
 
 

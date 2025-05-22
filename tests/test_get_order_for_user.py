@@ -3,6 +3,7 @@ import requests
 
 from data.ingredients_data import Ingredient
 from data.handlers import *
+from data.error_messages_list import ErrorMessages
 
 allure.suite("Получение доступных заказов для пользователя")
 class TestGetOrder:
@@ -19,4 +20,4 @@ class TestGetOrder:
     @allure.title("Получение заказов")
     def test_get_order_without_auth(self):
         response = requests.get(f"{Urls.MAIN_URL}{Handlers.GET_ORDERS}")
-        assert response.status_code == 401 and response.json()['message'] == "You should be authorised"
+        assert response.status_code == 401 and response.json()['message'] == ErrorMessages.UNAUTHORIZED_MESSAGE
